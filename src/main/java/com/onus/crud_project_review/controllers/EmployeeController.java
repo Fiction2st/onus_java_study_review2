@@ -2,9 +2,12 @@ package com.onus.crud_project_review.controllers;
 
 import com.onus.crud_project_review.dtos.EmployeeDTO;
 import com.onus.crud_project_review.dtos.EmployeeResponseDTO;
+import com.onus.crud_project_review.dtos.PageResponseDTO;
 import com.onus.crud_project_review.repositories.EmployeeRepository;
 import com.onus.crud_project_review.services.EmployeeService;
+
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,23 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees(){
         List<EmployeeResponseDTO> employees = employeeService.getAllEmployees();
         return ResponseEntity.ok(employees);
+    }
+
+    @Cacheable(
+            value = "employees",
+            key = "T(java.util.Objects).hash(#pageNo, #pageSize, #sortBy, #sortDirection, #searchKeyword)"
+    )
+
+    @GetMapping("/all")
+    public ResponseEntity<PageResponseDTO> getAllEmployeeWithPagination(
+            @RequestParam(defaultValue = "1") int pageNo,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "firstName") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(required = false) String searchKeyword
+    ) {
+        PageResponseDTO res = employeeService.getAllEmployeeWithPagination(pageNo, pageSize, sortBy, sortDirection, searchKeyword);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/{employeeId}")

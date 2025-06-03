@@ -1,4 +1,4 @@
-package com.onus.crud_project_review.common;
+package com.onus.demo_crud.common;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,23 +22,18 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(insertable = false)
-    private LocalDateTime lastModifiedDate;
+    private LocalDateTime updatedAt;
 
-    @CreatedBy
-    @Column(nullable = false, updatable = false)
-    private Long createdBy;
-
-    @LastModifiedBy
-    @Column(insertable = false)
-    private Long lastModifiedBy;
 }
+

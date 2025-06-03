@@ -2,11 +2,17 @@ package com.onus.crud_project_review.services;
 
 import com.onus.crud_project_review.dtos.EmployeeDTO;
 import com.onus.crud_project_review.dtos.EmployeeResponseDTO;
+import com.onus.crud_project_review.dtos.PageResponseDTO;
 import com.onus.crud_project_review.entities.Employees;
 import com.onus.crud_project_review.mapper.EmployeeMapper;
 import com.onus.crud_project_review.repositories.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
+import org.springdoc.core.service.GenericResponseService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
+    private final GenericResponseService responseBuilder;
     private EmployeeRepository employeeRepository;
     @Override
     public EmployeeResponseDTO createEmployee(EmployeeDTO employeeDTO) {
@@ -69,5 +76,38 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employees updatedEmployee = employeeRepository.save(employees);
 
         return EmployeeMapper.mapToEmployeeResponseDTO(updatedEmployee);
+    }
+
+    @Override
+    public PageResponseDTO getAllEmployeeWithPagination(int pageNo, int pageSize, String sortBy, String sortDirection, String searchKeyword) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNo -1, pageSize, sort);
+
+        Page<Employees> employeePage;
+        if(searchKeyword == null || searchKeyword.trim().isEmpty()) {
+            employeePage = employeeRepository.findAll(pageable);
+        } else {
+            employeePage = employeeRepository.findAllByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
+                    searchKeyword, searchKeyword, searchKeyword, pageable // searchKeyword 는 하나만 작성해도 된다.
+            );
+        }
+
+        List<EmployeeResponseDTO> employeeResponseDTOS = employeePage.getContent()
+                .stream()
+                .map(EmployeeMapper::mapToEmployeeResponseDTO)
+                .collect(Collectors.toList());
+
+
+        return PageResponseDTO.builder()
+                .content(employeeResponseDTOS)
+                .pageNo(pageNo)
+                .pageSize(pageSize)
+                .totalPages(employeePage.getTotalPages())
+                .totalSize(employeePage.getTotalElements())
+                .hasNext(employeePage.hasNext())
+                .hasPrevious(employeePage.hasPrevious())
+                .build();
     }
 }

@@ -2,6 +2,8 @@ package com.onus.crud_project_review.services;
 
 import com.onus.crud_project_review.dtos.EmployeeDTO;
 import com.onus.crud_project_review.dtos.EmployeeResponseDTO;
+import com.onus.crud_project_review.dtos.PageResponseDTO;
+
 
 import java.util.List;
 
@@ -11,4 +13,7 @@ public interface EmployeeService {
     List<EmployeeResponseDTO> getAllEmployees();
     void deleteEmployeeById(String employeeId);
     EmployeeResponseDTO updateEmployee(String employeeId, EmployeeDTO employeeDTO);
+    PageResponseDTO getAllEmployeeWithPagination(
+            int pageNo, int pageSize, String sortBy,
+            String sortDirection, String searchKeyword);
 }
