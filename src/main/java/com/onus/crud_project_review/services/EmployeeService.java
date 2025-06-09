@@ -1,7 +1,7 @@
 package com.onus.crud_project_review.services;
 
-import com.onus.crud_project_review.dtos.EmployeeDTO;
-import com.onus.crud_project_review.dtos.EmployeeResponseDTO;
+import com.onus.crud_project_review.dtos.employee.EmployeeDTO;
+import com.onus.crud_project_review.dtos.employee.EmployeeResponseDTO;
 import com.onus.crud_project_review.dtos.PageResponseDTO;
 
 

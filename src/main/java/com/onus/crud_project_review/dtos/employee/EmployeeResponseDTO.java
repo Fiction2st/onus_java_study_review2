@@ -1,4 +1,4 @@
-package com.onus.crud_project_review.dtos;
+package com.onus.crud_project_review.dtos.employee;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

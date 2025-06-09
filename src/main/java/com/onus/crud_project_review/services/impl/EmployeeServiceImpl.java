@@ -1,13 +1,13 @@
-package com.onus.crud_project_review.services;
+package com.onus.crud_project_review.services.impl;
 
-import com.onus.crud_project_review.dtos.EmployeeDTO;
-import com.onus.crud_project_review.dtos.EmployeeResponseDTO;
+import com.onus.crud_project_review.dtos.employee.EmployeeDTO;
+import com.onus.crud_project_review.dtos.employee.EmployeeResponseDTO;
 import com.onus.crud_project_review.dtos.PageResponseDTO;
 import com.onus.crud_project_review.entities.Employees;
 import com.onus.crud_project_review.mapper.EmployeeMapper;
 import com.onus.crud_project_review.repositories.EmployeeRepository;
+import com.onus.crud_project_review.services.EmployeeService;
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 import org.springdoc.core.service.GenericResponseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

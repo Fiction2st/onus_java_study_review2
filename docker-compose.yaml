@@ -13,3 +13,10 @@ services:
       MYSQL_PASSWORD : password
     ports:
       - "3301:3306"
+
+  redis:
+    container_name: onus-redis
+    image : redis:latest
+    ports:
+      - "6376:6379"
+    restart : unless-stopped

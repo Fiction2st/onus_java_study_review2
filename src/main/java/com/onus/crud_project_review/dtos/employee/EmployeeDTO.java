@@ -1,4 +1,4 @@
-package com.onus.crud_project_review.dtos;
+package com.onus.crud_project_review.dtos.employee;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
